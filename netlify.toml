@@ -3,10 +3,9 @@
   publish = "public"
 
 [functions]
-  node_bundler = "none"
+  node_bundler = "esbuild"
+  external_node_modules = ["@napi-rs/canvas", "@napi-rs/canvas-*"]
   included_files = [
-    "netlify/functions/deckRenderer.mjs",
-    "netlify/functions/cardData.mjs",
     "netlify/functions/*.ttf",
     "netlify/functions/*.svg",
     "netlify/functions/*.json"
