@@ -14,7 +14,3 @@ export default async function handler(req, context) {
     headers: { 'Content-Type': 'application/json', ...CORS_HEADERS }
   });
 }
-
-export const config = {
-  path: "/health"
-};
