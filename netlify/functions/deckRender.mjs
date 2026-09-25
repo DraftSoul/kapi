@@ -1,6 +1,6 @@
 import { createCanvas, loadImage, GlobalFonts } from '@napi-rs/canvas';
 import QRCode from 'qrcode';
-import { allCards, cardIndex, parentOfMap, veteranMap, becomesVeteranMap } from './cardData.js';
+import { allCards, cardIndex, parentOfMap, veteranMap, becomesVeteranMap } from './cardData.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
