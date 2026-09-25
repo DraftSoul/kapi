@@ -1,74 +1,59 @@
 import { generateDeckImage, preloadIcons } from './deckRenderer.js';
 
-let iconsReady = false;
-let iconsPromise = null;
-
-async function ensureIcons() {
-  if (iconsReady) return;
-  if (!iconsPromise) {
-    iconsPromise = preloadIcons()
-      .then(() => { iconsReady = true; })
-      .catch((e) => {
-        console.warn('图标预加载失败:', e.message);
-        iconsReady = true; // 避免重复尝试
-      });
-  }
-  return iconsPromise;
-}
-
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type'
-};
-
-export const handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+// v2: 不再使用 event/context 参数风格，改用标准 Request/Response
+export default async function handler(req, context) {
+  // 处理 OPTIONS
+  if (req.method === 'OPTIONS') {
+    return new Response('', {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Method Not Allowed' })
-    };
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method Not Allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
 
   let body;
   try {
-    body = JSON.parse(event.body || '{}');
+    body = await req.json();
   } catch {
-    return {
-      statusCode: 400,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Invalid JSON' })
-    };
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
 
   const { deckCode, ...options } = body;
   if (!deckCode) {
-    return {
-      statusCode: 400,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Missing deckCode' })
-    };
+    return new Response(JSON.stringify({ error: 'Missing deckCode' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
 
   try {
-    await ensureIcons();
     const result = await generateDeckImage(deckCode, options);
-    return {
-      statusCode: 200,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify(result)
-    };
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   } catch (err) {
     console.error('生成失败:', err);
-    return {
-      statusCode: 500,
-      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: err.message })
-    };
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
+}
+
+export const config = {
+  path: "/generate"
 };
