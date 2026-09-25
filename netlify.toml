@@ -5,6 +5,8 @@
 [functions]
   node_bundler = "none"
   included_files = [
+    "netlify/functions/deckRenderer.mjs",
+    "netlify/functions/cardData.mjs",
     "netlify/functions/*.ttf",
     "netlify/functions/*.svg",
     "netlify/functions/*.json"
