@@ -4,6 +4,7 @@
 
 [functions]
   node_bundler = "esbuild"
+  format = "esm"
   external_node_modules = ["@napi-rs/canvas", "@napi-rs/canvas-*"]
   included_files = [
     "netlify/functions/*.ttf",
