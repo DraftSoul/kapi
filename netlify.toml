@@ -3,9 +3,7 @@
   publish = "public"
 
 [functions]
-  node_bundler = "esbuild"
-  format = "esm"
-  external_node_modules = ["@napi-rs/canvas", "@napi-rs/canvas-*"]
+  node_bundler = "none"
   included_files = [
     "netlify/functions/*.ttf",
     "netlify/functions/*.svg",
