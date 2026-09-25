@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const HERE = process.cwd();
+const HERE = path.dirname(fileURLToPath(import.meta.url));
 
 let allCards = [];
 let cardIndex = {};
