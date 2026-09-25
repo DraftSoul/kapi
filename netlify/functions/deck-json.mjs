@@ -1,4 +1,4 @@
-import { parseDeckCode } from './deckRenderer.js';
+import { parseDeckCode } from './deckRenderer.mjs';
 
 export default async function handler(req, context) {
   const corsHeaders = {
