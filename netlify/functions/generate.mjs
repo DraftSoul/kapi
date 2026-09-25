@@ -1,4 +1,4 @@
-import { generateDeckImage, preloadIcons } from './deckRenderer.mjs';
+import { generateDeckImage, preloadIcons } from './deckRenderer.js';
 
 let iconsReady = false;
 let iconsPromise = null;

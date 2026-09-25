@@ -1,4 +1,4 @@
-import { parseDeckCode } from './deckRenderer.mjs';
+import { parseDeckCode } from './deckRenderer.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
