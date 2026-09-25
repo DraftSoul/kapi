@@ -4,7 +4,12 @@
 
 [functions]
   node_bundler = "esbuild"
-  included_files = ["netlify/functions/*.ttf", "netlify/functions/*.svg", "netlify/functions/*.json"]
+  external_node_modules = ["@napi-rs/canvas", "@napi-rs/canvas-*"]
+  included_files = [
+    "netlify/functions/*.ttf",
+    "netlify/functions/*.svg",
+    "netlify/functions/*.json"
+  ]
 
 [build.environment]
   NODE_VERSION = "18.20.4"
