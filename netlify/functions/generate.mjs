@@ -4,8 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// ==================== 数据加载（原 cardData.js） ====================
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const HERE = process.cwd();
 
 let allCards = [];
 let cardIndex = {};
@@ -14,7 +13,7 @@ let veteranMap = {};
 let becomesVeteranMap = {};
 
 function loadData() {
-  const dataPath = path.join(__dirname, 'data.json');
+  const dataPath = path.join(HERE, 'data.json');
   const raw = fs.readFileSync(dataPath, 'utf8');
   const data = JSON.parse(raw);
   const rawCards = data.cards || [];
@@ -120,7 +119,7 @@ let fontRegistered = false;
 function ensureFont() {
   if (fontRegistered) return;
   try {
-    const fontPath = path.join(__dirname, 'font.ttf');
+    const fontPath = path.join(HERE, 'font.ttf');
     if (fs.existsSync(fontPath)) {
       GlobalFonts.registerFromPath(fontPath, 'CustomFont');
       console.log('✅ 字体注册成功');
@@ -157,7 +156,7 @@ async function loadFactionIcon(factionKey) {
     return factionIconCache.get(factionKey);
   }
   try {
-    const iconPath = path.join(__dirname, `${factionKey}.svg`);
+    const iconPath = path.join(HERE, `${factionKey}.svg`);
     if (fs.existsSync(iconPath)) {
       const svgBuffer = fs.readFileSync(iconPath);
       const svgDataUrl = `data:image/svg+xml;base64,${svgBuffer.toString('base64')}`;

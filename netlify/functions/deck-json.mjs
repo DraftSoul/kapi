@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const HERE = process.cwd();
 
 // ==================== 数据加载 ====================
 let allCards = [];
@@ -12,7 +12,7 @@ let veteranMap = {};
 let becomesVeteranMap = {};
 
 function loadData() {
-  const dataPath = path.join(__dirname, 'data.json');
+  const dataPath = path.join(HERE, 'data.json');
   const raw = fs.readFileSync(dataPath, 'utf8');
   const data = JSON.parse(raw);
   const rawCards = data.cards || [];
