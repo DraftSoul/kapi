@@ -16,21 +16,22 @@ async function ensureIcons() {
   return iconsPromise;
 }
 
-export default async function handler(req, context) {
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
-  };
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type'
+};
 
+export default async function handler(req, context) {
+  // 处理预检请求
   if (req.method === 'OPTIONS') {
-    return new Response('', { status: 200, headers: corsHeaders });
+    return new Response('', { status: 200, headers: CORS_HEADERS });
   }
 
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method Not Allowed' }), {
       status: 405,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS }
     });
   }
 
@@ -40,7 +41,7 @@ export default async function handler(req, context) {
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS }
     });
   }
 
@@ -48,7 +49,7 @@ export default async function handler(req, context) {
   if (!deckCode) {
     return new Response(JSON.stringify({ error: 'Missing deckCode' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS }
     });
   }
 
@@ -57,13 +58,13 @@ export default async function handler(req, context) {
     const result = await generateDeckImage(deckCode, options);
     return new Response(JSON.stringify(result), {
       status: 200,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS }
     });
   } catch (err) {
     console.error('生成失败:', err);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS }
     });
   }
 }
