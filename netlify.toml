@@ -1,0 +1,25 @@
+[build]
+  command = "npm install"
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["netlify/functions/*.ttf", "netlify/functions/*.svg", "netlify/functions/*.json"]
+
+[build.environment]
+  NODE_VERSION = "18.20.4"
+
+[[redirects]]
+  from = "/generate"
+  to = "/.netlify/functions/generate"
+  status = 200
+
+[[redirects]]
+  from = "/deck-json"
+  to = "/.netlify/functions/deck-json"
+  status = 200
+
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/health"
+  status = 200
